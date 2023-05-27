@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  title: Django Student Data
+  version: 0.0.0
+paths:
+  /student/combined/:
+    get:
+      operationId: student_combined_retrieve
+      tags:
+      - student
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /student/school/:
+    post:
+      operationId: student_school_create
+      tags:
+      - student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/School'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/School'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/School'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/School'
+          description: ''
+  /student/student/:
+    post:
+      operationId: student_student_create
+      tags:
+      - student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Student'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+components:
+  schemas:
+    School:
+      type: object
+      properties:
+        school:
+          type: string
+          maxLength: 50
+        Standard:
+          type: integer
+      required:
+      - Standard
+      - school
+    Student:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          maxLength: 254
+      required:
+      - email
+      - name
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
