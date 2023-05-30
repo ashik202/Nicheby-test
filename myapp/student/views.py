@@ -19,12 +19,6 @@ class SchoolCreateView(generics.CreateAPIView):
 
 class CombinedViewSet(viewsets.ViewSet):
     def list(self, request):
-        students = Student.objects.all()
-        schools = School.objects.all()
-        student_serializer = StudentSerializer(students, many=True)
-        school_serializer = SchoolSerializer(schools, many=True)
-        data = {
-            'students': student_serializer.data,
-            'schools': school_serializer.data
-        }
-        return Response(data)
+        queryset = School.objects.select_related('student').all()
+        serializer = SchoolSerializer(queryset, many=True)
+        return Response(serializer.data)
